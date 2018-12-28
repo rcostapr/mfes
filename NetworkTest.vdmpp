@@ -4,6 +4,7 @@ types
 values
 -- TODO Define values here
 instance variables
+	
 	nt: Network := new Network();
 	
 	place1: Place := new Place(1,"Porto");
@@ -96,11 +97,49 @@ operations
 			
 		);
 		
+		private testGetAllConnections: () ==> ()
+		testGetAllConnections() == (
+			dcl AllConnections: set of Connection := {}; --var local
+			
+		 	IO`print("\n");IO`print("testGetAllConnections: ");IO`print("\n");
+			nt.addPlace(place1);
+			nt.addPlace(place2);
+			nt.addPlace(place3);
+			nt.addPlace(place4);
+			nt.addPlace(place5);
+			
+			-- Porto Connections
+			place1.addConnection(conn1);
+			place1.addConnection(conn4);
+			place1.addConnection(conn5);
+			place1.addConnection(conn6);
+			
+			-- Lisboa Connections
+			place2.addConnection(conn7);
+			place2.addConnection(conn8);
+			
+			-- Coimbra Connections AllConnections
+			place3.addConnection(conn2);
+			place3.addConnection(conn3);
+			
+			for all place in set nt.getPlaces() do
+				for all conn in set place.getConnections() do
+						AllConnections := AllConnections union {conn};
+			
+			IO`print("All Connections: "); IO`print(AllConnections); IO`print("\n");
+			assertTrue(AllConnections={conn1,conn2,conn3,conn4,conn5,conn6,conn7,conn8});
+			
+			IO`print("All Connections Size: "); IO`print(card AllConnections); IO`print("\n");
+			assertTrue(card AllConnections=8);
+			
+		);
+		
 	public static main: () ==> ()
 		main() == (
 			new NetworkTest().testNetworkCreate();
 			new NetworkTest().testAddPlaces();
 			new NetworkTest().testAddConnections();
+			new NetworkTest().testGetAllConnections();
 		);
 		
 functions
