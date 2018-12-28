@@ -1,0 +1,43 @@
+class Place
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	private id: nat1;
+	private name: seq1 of char;
+	private Connections: set of Connection := {};
+operations
+	--Place Constructor
+		public Place: nat1 * seq1 of char ==> Place
+		Place(i,myname) == (
+			id := i;
+			name := myname;
+			return self)
+		post Connections = {} and id = i;
+		
+		--Get Place's name
+		public getName: () ==> seq1 of char
+		getName() == (
+			return name
+		);
+		
+		--Add Connection to a Place
+		public addConnection: Connection ==> ()
+		addConnection(conn) == (
+			Connections := {conn} union Connections;
+			)
+		pre not conn in set Connections
+		post Connections = {conn} union Connections~;
+		
+		public connSize: () ==> nat
+			connSize () == return card Connections;
+			
+		public getConnections: () ==> set of Connection
+			getConnections () == return Connections;
+		
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Place

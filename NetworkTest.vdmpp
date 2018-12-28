@@ -1,0 +1,109 @@
+class NetworkTest
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	nt: Network := new Network();
+	
+	place1: Place := new Place(1,"Porto");
+	place2: Place := new Place(2,"Lisboa");
+	place3: Place := new Place(3,"Coimbra");
+	place4: Place := new Place(4,"Guarda");
+	place5: Place := new Place(5,"Faro");
+	
+	-- Viagem Bus Porto --> Coimbra
+	conn1: Connection := new Connection(place3,<Bus>,80,20);
+	-- Viagem Bus Coimbra --> Lisboa
+	conn2: Connection := new Connection(place2,<Bus>,100,25);
+	-- Viagem Bus Coimbra --> Guarda
+	conn3: Connection := new Connection(place4,<Bus>,90,15);
+	-- Viagem Train Porto --> Lisboa
+	conn4: Connection := new Connection(place2,<Train>,130,55);
+	-- Viagem Plane Porto --> Lisboa
+	conn5: Connection := new Connection(place2,<Plane>,40,200);
+	-- Viagem Train Porto --> Coimbra
+	conn6: Connection := new Connection(place3,<Train>,50,35);
+	-- Viagem Train Lisboa --> Faro
+	conn7: Connection := new Connection(place3,<Train>,100,30);
+	-- Viagem Bus Lisboa --> Faro
+	conn8: Connection := new Connection(place3,<Bus>,160,20);
+	
+operations
+
+	private assertTrue: bool ==> ()
+		assertTrue(cond) == return
+		pre cond;
+		
+	private testNetworkCreate: () ==> ()
+		testNetworkCreate() == (
+			IO`print("Network Size: "); IO`print(nt.size()); IO`print("\n");
+			assertTrue(nt.size()=0);
+			IO`print("Network Size: "); IO`print(nt.getPlaces()); IO`print("\n");
+			assertTrue(nt.getPlaces()={});
+		);
+		
+	private testAddPlaces: () ==> ()
+		testAddPlaces() == (
+			nt.addPlace(place1);
+			nt.addPlace(place2);
+			nt.addPlace(place3);
+			nt.addPlace(place4);
+			nt.addPlace(place5);
+			IO`print("Network Size: "); IO`print(nt.size()); IO`print("\n");
+			assertTrue(nt.size()=5);
+			IO`print("Network Size: "); IO`print(nt.getPlaces()); IO`print("\n");
+			assertTrue(nt.getPlaces()={place1,place2,place3,place4,place5});
+		);
+		
+		private testAddConnections: () ==> ()
+		testAddConnections() == (
+		 	IO`print("\n");IO`print("testAddConnections: ");IO`print("\n");
+			nt.addPlace(place1);
+			nt.addPlace(place2);
+			nt.addPlace(place3);
+			nt.addPlace(place4);
+			nt.addPlace(place5);
+			
+			-- Porto Connections
+			place1.addConnection(conn1);
+			place1.addConnection(conn4);
+			place1.addConnection(conn5);
+			place1.addConnection(conn6);
+			
+			-- Lisboa Connections
+			place2.addConnection(conn7);
+			place2.addConnection(conn8);
+			
+			-- Coimbra Connections
+			place3.addConnection(conn2);
+			place3.addConnection(conn3);
+			
+			IO`print("Network Size: "); IO`print(nt.size()); IO`print("\n");
+			assertTrue(nt.size()=5);
+			IO`print("Network Size: "); IO`print(nt.getPlaces()); IO`print("\n");
+			assertTrue(nt.getPlaces()={place1,place2,place3,place4,place5});
+			
+			IO`print("Place 1 Connections Size: "); IO`print(place1.connSize()); IO`print("\n");
+			assertTrue(place1.connSize()=4);
+			IO`print("Place 1 Connections: "); IO`print(place1.getConnections()); IO`print("\n");
+			assertTrue(place1.getConnections()={conn1,conn4,conn5,conn6});
+			
+			IO`print("Place 4 Connections Size: "); IO`print(place4.connSize()); IO`print("\n");
+			assertTrue(place4.connSize()=0);
+			IO`print("Place 4 Connections: "); IO`print(place4.getConnections()); IO`print("\n");
+			assertTrue(place4.getConnections()={});
+			
+		);
+		
+	public static main: () ==> ()
+		main() == (
+			new NetworkTest().testNetworkCreate();
+			new NetworkTest().testAddPlaces();
+		);
+		
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end NetworkTest

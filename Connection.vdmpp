@@ -1,0 +1,44 @@
+class Connection
+types
+	public transportType = <Plane> | <Bus> | <Car> | <Ferry> | <Train>
+		inv transportType == transportType = <Plane> or transportType = <Bus> or transportType = <Car> or transportType = <Ferry> or transportType = <Train>;
+values
+-- TODO Define values here
+instance variables
+	private destination : Place;
+	private transport : transportType;
+	private time : nat1;
+	private cost : nat1;
+operations
+	public Connection : Place * transportType * nat1 * nat1 ==> Connection
+		Connection(Pl,Tr,Ti,Cs) == (
+		destination := Pl;
+		transport := Tr;
+		time := Ti;
+		cost := Cs;
+	)
+	pre Ti > 0 and Cs > 0;
+	
+	-- Get Destination
+	public getDestination : () ==> Place
+	getDestination() == return destination;
+	
+	-- Get transport
+	public getTransport : () ==> transportType
+	getTransport() == return transport;
+	
+	-- Get time
+	public getTime : () ==> nat1
+	getTime() == return time
+	pre not time <= 0;
+	
+	-- Get cost
+	public getCost : () ==> nat1
+	getCost() == return cost
+	pre not cost <= 0;
+	
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Connection

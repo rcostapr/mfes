@@ -1,0 +1,31 @@
+class Network
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	private Places : set of Place := {}; --Lugares
+operations
+	public Network:() ==> Network
+		Network() == (return self)
+		post Places = {};
+	
+	public addPlace:Place ==> ()
+		addPlace(newPlace)== (
+			Places := {newPlace} union Places;
+		);
+		
+	public clear: () ==> ()
+		clear () == Places := {};
+		
+	public size: () ==> nat
+		size () == return card Places;
+	
+	public getPlaces: () ==> set of Place
+		getPlaces() == return Places;
+		
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Network
