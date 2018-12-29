@@ -21,7 +21,7 @@ operations
 	public size: () ==> nat
 		size () == return card Places;
 	
-	public getPlaces: () ==> set of Place
+	pure public getPlaces: () ==> set of Place
 		getPlaces() == return Places;
 		
 functions

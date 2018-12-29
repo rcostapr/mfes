@@ -26,9 +26,17 @@ instance variables
 	-- Viagem Train Porto --> Coimbra
 	conn6: Connection := new Connection(place3,<Train>,50,35);
 	-- Viagem Train Lisboa --> Faro
-	conn7: Connection := new Connection(place3,<Train>,100,30);
+	conn7: Connection := new Connection(place5,<Train>,100,30);
 	-- Viagem Bus Lisboa --> Faro
-	conn8: Connection := new Connection(place3,<Bus>,160,20);
+	conn8: Connection := new Connection(place5,<Bus>,160,20);
+	
+	
+	-- Viagem Bus Coimbra --> Porto
+	conn9: Connection := new Connection(place1,<Bus>,80,20);
+	-- Viagem Train Faro --> Coimbra
+	conn10: Connection := new Connection(place3,<Train>,140,45);
+	
+	
 	
 operations
 
@@ -118,7 +126,7 @@ operations
 			place2.addConnection(conn7);
 			place2.addConnection(conn8);
 			
-			-- Coimbra Connections AllConnections
+			-- Coimbra Connections
 			place3.addConnection(conn2);
 			place3.addConnection(conn3);
 			
@@ -134,12 +142,65 @@ operations
 			
 		);
 		
+		
+		private testTravel: () ==> ()
+		testTravel() == (
+
+			dcl travel1: Travel;
+			dcl travel2: Travel;
+			dcl travel3: Travel;
+			dcl travel4: Travel;
+				
+		 	IO`print("\n");IO`print("testTravel: ");IO`print("\n");
+			nt.addPlace(place1);
+			nt.addPlace(place2);
+			nt.addPlace(place3);
+			nt.addPlace(place4);
+			nt.addPlace(place5);
+			
+			-- Porto Connections
+			place1.addConnection(conn1);
+			place1.addConnection(conn4);
+			place1.addConnection(conn5);
+			place1.addConnection(conn6);
+			
+			-- Lisboa Connections
+			place2.addConnection(conn7);
+			place2.addConnection(conn8);
+			
+			-- Coimbra Connections
+			place3.addConnection(conn2);
+			place3.addConnection(conn3);
+			place3.addConnection(conn9);
+			
+			-- Faro Connections
+			place5.addConnection(conn10);
+			
+			travel1 := new Travel(nt,place1,place2);
+			IO`print("\nTravel1: ");IO`print(place1.getName());IO`print(" --> ");IO`print(place2.getName()); IO`print("\n");
+			travel1.printTrips();
+			
+			travel2 := new Travel(nt,place1,place4);
+			IO`print("\n\nTravel2: ");IO`print(place1.getName());IO`print(" --> ");IO`print(place4.getName()); IO`print("\n");
+			travel2.printTrips();
+			
+			travel3 := new Travel(nt,place1,place5);
+			IO`print("\n\nTravel3: ");IO`print(place1.getName());IO`print(" --> ");IO`print(place5.getName()); IO`print("\n");
+			travel3.printTrips();
+			
+			travel4 := new Travel(nt,place5,place1);
+			IO`print("\n\nTravel4: ");IO`print(place5.getName());IO`print(" --> ");IO`print(place1.getName()); IO`print("\n");
+			travel4.printTrips();
+			
+		);
+		
 	public static main: () ==> ()
 		main() == (
-			new NetworkTest().testNetworkCreate();
-			new NetworkTest().testAddPlaces();
-			new NetworkTest().testAddConnections();
-			new NetworkTest().testGetAllConnections();
+			--new NetworkTest().testNetworkCreate();
+			--new NetworkTest().testAddPlaces();
+			--new NetworkTest().testAddConnections();
+			--new NetworkTest().testGetAllConnections();
+			new NetworkTest().testTravel();
 		);
 		
 functions

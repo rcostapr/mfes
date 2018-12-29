@@ -22,6 +22,12 @@ operations
 			return name
 		);
 		
+		--Get Place's name
+		public getID: () ==> nat1
+		getID() == (
+			return id
+		);
+		
 		--Add Connection to a Place
 		public addConnection: Connection ==> ()
 		addConnection(conn) == (

@@ -7,8 +7,8 @@ values
 instance variables
 	private destination : Place;
 	private transport : transportType;
-	private time : nat1;
-	private cost : nat1;
+	private time : nat;
+	private cost : nat;
 operations
 	public Connection : Place * transportType * nat1 * nat1 ==> Connection
 		Connection(Pl,Tr,Ti,Cs) == (
@@ -16,6 +16,7 @@ operations
 		transport := Tr;
 		time := Ti;
 		cost := Cs;
+		return self;
 	)
 	pre Ti > 0 and Cs > 0;
 	
