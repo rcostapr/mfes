@@ -1,0 +1,119 @@
+class Travel
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	private nt : Network;
+	private startPlace : Place;
+	private endPlace : Place;
+	private trips : set of seq of Connection := {};
+operations
+	public Travel: Network * Place * Place ==> Travel
+		Travel(net,sPlace,ePlace) == (
+			nt := net;
+			startPlace := sPlace;
+			endPlace := ePlace;
+			generateTrips();			
+			return self)
+		pre sPlace <> ePlace
+		post sPlace in set net.getPlaces() 
+		and ePlace in set net.getPlaces();
+		
+	private generateTrips: ()  ==> ()
+		generateTrips() == (
+			dcl tripConnections: seq of Connection := [];
+			getNextTrip(tripConnections,startPlace);
+		);
+		
+	private getNextTrip: seq of Connection * Place ==> ()
+		getNextTrip(seqConnections,currentPlace) == (
+			for all conn in set currentPlace.getConnections() do (
+				dcl tripConnections: seq of Connection := seqConnections;
+				if conn.getDestination().getID() not in set getTripPlaces(seqConnections)
+					then (
+						--IO`print("\nEntao Incluir: ");IO`print(conn.getDestination().getID());
+						tripConnections(len tripConnections + 1) := conn;
+						);
+					
+				if conn.getDestination() = endPlace then (
+					addTrip(tripConnections);
+				) else (
+					if conn.getDestination().connSize() > 0 and conn.getDestination().getID() not in set getTripPlaces(seqConnections)
+						then (
+							getNextTrip(tripConnections,conn.getDestination());
+						);
+				);
+			);
+		);
+		
+	private addTrip: seq of Connection ==> ()
+		addTrip(seqConn) == (
+			trips := {seqConn} union trips;
+		);
+	
+	private getTripPlaces: seq of Connection ==> set of nat1
+		getTripPlaces(seqConn) == (
+			dcl places: set of nat1 :={startPlace.getID()};
+			for all conn in set elems seqConn do(
+				places := {conn.getDestination().getID()} union places;
+			);
+			--IO`print("\ngetTripPlaces: ");IO`print(places);
+			return places;
+		);
+	
+	public getTrips: () ==> set of seq of Connection
+		getTrips () == return trips;
+		
+		
+	public getTripTime: seq of Connection ==> nat
+		getTripTime (seqConn) == (
+				dcl totalTime: nat := 0;
+				for index = 1 to len seqConn by 1 do(
+					dcl conn:Connection:=seqConn(index);
+					totalTime := totalTime + conn.getTime();
+				);
+				return totalTime;
+		);
+		
+		public getTripCost: seq of Connection ==> nat
+		getTripCost (seqConn) == (
+				dcl totalCost: nat := 0;
+				for index = 1 to len seqConn by 1 do(
+					dcl conn:Connection:=seqConn(index);
+					totalCost := totalCost + conn.getCost();
+				);
+				return totalCost;
+		);
+		
+	public printTrips: () ==> ()
+		printTrips () == (
+			if card(trips) > 0 then
+				for all seqConn in set trips do(
+					IO`print("\nTravel: ");IO`print(startPlace.getName());
+					for index = 1 to len seqConn by 1 do(
+						dcl conn:Connection:=seqConn(index);
+						IO`print(" --");IO`print(" (");IO`print(conn.getTransport());IO`print(")--> ");IO`print(conn.getDestination().getName());
+					);
+					IO`print(" :: Total Time: ");IO`print(getTripTime(seqConn));
+					IO`print(" -- Total Cost: ");IO`print(getTripCost(seqConn));
+				)
+			else (
+				IO`print("\nTravel: ");IO`print(startPlace.getName());
+				IO`print(" No Connection To ");IO`print(endPlace.getName());
+			)
+		);
+	private printSeqConnection: seq of Connection ==> ()
+		printSeqConnection (seqConn) == (
+				IO`print("\nseqConn: ");IO`print(startPlace.getName());
+				for index = 1 to len seqConn by 1 do(
+					dcl conn:Connection:=seqConn(index);
+					IO`print(" --");IO`print(" (");IO`print(conn.getTransport());IO`print(")--> ");IO`print(conn.getDestination().getName());
+				);
+		);
+	
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Travel
