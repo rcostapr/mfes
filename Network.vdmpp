@@ -1,31 +1,48 @@
 class Network
-types
--- TODO Define types here
-values
--- TODO Define values here
+/*
+	Network of places that have public transports
+*/
 instance variables
-	private Places : set of Place := {}; --Lugares
+	private Places : set of Place := {};
 operations
 	public Network:() ==> Network
 		Network() == (return self)
 		post Places = {};
 	
+	-- add a place to the network
 	public addPlace:Place ==> ()
 		addPlace(newPlace)== (
 			Places := {newPlace} union Places;
-		);
+		)
+		pre newPlace not in set Places;
 		
+	-- Remove all Places from Network
 	public clear: () ==> ()
 		clear () == Places := {};
 		
+	-- Size of the Network
 	public size: () ==> nat
 		size () == return card Places;
-	
+		
+	-- Retrieve all Network places
 	pure public getPlaces: () ==> set of Place
 		getPlaces() == return Places;
+	
+	-- Remove a place from the network
+	public removePlace: Place ==> ()
+		removePlace (rmPlace) == (
+			Places := Places \ {rmPlace};
+		)
+		pre rmPlace in set Places;
 		
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
+	-- Get the number of connections of the network
+	public getConnectionsSize: () ==> nat
+		getConnectionsSize () == (
+			dcl AllConnections: set of Connection := {};
+			for all place in set Places do
+				for all conn in set place.getConnections() do
+						AllConnections := AllConnections union {conn};
+			return card(AllConnections);
+		);
+		
 end Network

@@ -1,14 +1,16 @@
 class Connection
+/*
+	Define a connection to a other Place
+	Construct a connection with destination, kind of transport, cost of the trip, time of the trip 
+*/
 types
 	public transportType = <Plane> | <Bus> | <Car> | <Ferry> | <Train>
 		inv transportType == transportType = <Plane> or transportType = <Bus> or transportType = <Car> or transportType = <Ferry> or transportType = <Train>;
-values
--- TODO Define values here
 instance variables
 	private destination : Place;
 	private transport : transportType;
-	private time : nat;
-	private cost : nat;
+	private time : nat; -- in minutes
+	private cost : nat; -- in euros
 operations
 	public Connection : Place * transportType * nat1 * nat1 ==> Connection
 		Connection(Pl,Tr,Ti,Cs) == (
@@ -37,9 +39,5 @@ operations
 	public getCost : () ==> nat1
 	getCost() == return cost
 	pre not cost <= 0;
-	
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
+
 end Connection

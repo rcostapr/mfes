@@ -1,8 +1,8 @@
 class Place
-types
--- TODO Define types here
-values
--- TODO Define values here
+/*
+	A place that have a public transport and have a connection with other place.
+	Construct a place with name of the place and ID for the place.
+*/
 instance variables
 	private id: nat1;
 	private name: seq1 of char;
@@ -14,36 +14,41 @@ operations
 			id := i;
 			name := myname;
 			return self)
+		pre i > 0 and len(myname)>0
 		post Connections = {} and id = i;
 		
-		--Get Place's name
+		-- Get Place's name
 		public getName: () ==> seq1 of char
 		getName() == (
 			return name
 		);
 		
-		--Get Place's name
+		-- Get Place's ID
 		public getID: () ==> nat1
 		getID() == (
 			return id
 		);
 		
-		--Add Connection to a Place
+		-- Add Connection to other Place
 		public addConnection: Connection ==> ()
 		addConnection(conn) == (
 			Connections := {conn} union Connections;
 			)
 		pre not conn in set Connections
-		post Connections = {conn} union Connections~;
+		post Connections = {conn} union Connections~; -- the ~ symbol on the variable indicates the value of the state variable before execution of the operation
 		
+		-- Remove a connection to other place
+		public removeConnection: Connection ==> ()
+			removeConnection (rmConn) == (
+				Connections := Connections \ {rmConn};
+			)
+			pre rmConn in set Connections;
+		
+		-- How many connections has a place
 		public connSize: () ==> nat
 			connSize () == return card Connections;
-			
+		
+		-- Retrieve Place's Connections
 		public getConnections: () ==> set of Connection
 			getConnections () == return Connections;
-		
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
 end Place

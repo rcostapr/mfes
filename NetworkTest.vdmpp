@@ -1,8 +1,4 @@
 class NetworkTest
-types
--- TODO Define types here
-values
--- TODO Define values here
 instance variables
 	
 	nt: Network := new Network();
@@ -12,6 +8,9 @@ instance variables
 	place3: Place := new Place(3,"Coimbra");
 	place4: Place := new Place(4,"Guarda");
 	place5: Place := new Place(5,"Faro");
+	place6: Place := new Place(6,"Santarém");
+	
+	travel: Travel := new Travel(nt);
 	
 	-- Viagem Bus Porto --> Coimbra
 	conn1: Connection := new Connection(place3,<Bus>,80,20);
@@ -150,6 +149,7 @@ operations
 			dcl travel2: Travel;
 			dcl travel3: Travel;
 			dcl travel4: Travel;
+			dcl travel5: Travel;
 				
 		 	IO`print("\n");IO`print("testTravel: ");IO`print("\n");
 			nt.addPlace(place1);
@@ -157,8 +157,13 @@ operations
 			nt.addPlace(place3);
 			nt.addPlace(place4);
 			nt.addPlace(place5);
+			nt.addPlace(place6);
+			nt.removePlace(place6);
+			nt.addPlace(place6);
 			
 			-- Porto Connections
+			place1.addConnection(conn1);
+			place1.removeConnection(conn1);
 			place1.addConnection(conn1);
 			place1.addConnection(conn4);
 			place1.addConnection(conn5);
@@ -192,19 +197,73 @@ operations
 			IO`print("\n\nTravel4: ");IO`print(place5.getName());IO`print(" --> ");IO`print(place1.getName()); IO`print("\n");
 			travel4.printTrips();
 			
+			travel5 := new Travel(nt,place1,place6);
+			IO`print("\n\nTravel5: ");IO`print(place1.getName());IO`print(" --> ");IO`print(place6.getName()); IO`print("\n");
+			travel5.printTrips();
+			
+			IO`print("\n\nNetwork Size: "); IO`print(nt.size()); IO`print("\n");
+			assertTrue(nt.size()=6);
+			
+			IO`print("\n\nTravel5 empty Trips: "); IO`print(travel5.getTrips()); IO`print("\n");
+			assertTrue(travel5.getTrips()={});
+			
+			nt.clear();
+			IO`print("Network Clear Size: "); IO`print(nt.size()); IO`print("\n");
+			assertTrue(nt.size()=0);
+			
 		);
 		
 	public static main: () ==> ()
 		main() == (
-			--new NetworkTest().testNetworkCreate();
-			--new NetworkTest().testAddPlaces();
-			--new NetworkTest().testAddConnections();
-			--new NetworkTest().testGetAllConnections();
+			new NetworkTest().testNetworkCreate();
+			new NetworkTest().testAddPlaces();
+			new NetworkTest().testAddConnections();
+			new NetworkTest().testGetAllConnections();
 			new NetworkTest().testTravel();
 		);
 		
-functions
--- TODO Define functiones here
 traces
--- TODO Define Combinatorial Test Traces here
+		-- test cases will be generated in all possible combinations
+		-- starting with a empty network followed by adding places and for each place adding connections
+		-- then add random travels between connections
+		randomNetwork : 
+			-- Clear NetWork
+			nt.clear();
+
+			
+			-- Add random Connection to the places
+			(let conn in set {conn1,conn2,conn3,conn4,conn5,conn6,conn7,conn8,conn9,conn10}
+ 						in place1.addConnection(conn)){1,1};
+ 						
+ 			(let conn in set {conn1,conn2,conn3,conn4,conn5,conn6,conn7,conn8,conn9,conn10}
+ 						in place2.addConnection(conn)){1,1};
+ 						
+ 			(let conn in set {conn1,conn2,conn3,conn4,conn5,conn6,conn7,conn8,conn9,conn10}
+ 						in place3.addConnection(conn)){1,1};
+ 						
+			nt.addPlace(place1);
+			nt.addPlace(place2);
+			nt.addPlace(place3);
+			nt.addPlace(place4);
+			nt.addPlace(place5);
+			nt.addPlace(place6);
+				
+			nt.size();
+			nt.getPlaces();
+						
+			nt.getConnectionsSize();
+							
+			travel.setPlaces(place1,place2);
+			
+randomPlaces : 
+			-- Clear NetWork
+			nt.clear();
+			
+			-- Add Places to the network
+			(let place in set {place1,place2,place3,place4,place5,place6} in 
+				nt.addPlace(place)){2,3};
+				
+			nt.size();
+			nt.getPlaces();
+
 end NetworkTest
