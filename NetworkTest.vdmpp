@@ -213,6 +213,69 @@ operations
 			
 		);
 		
+		
+		private testSearch: () ==> ()
+		testSearch() == (
+		
+			dcl searchResult1: set of Place := {};
+			dcl searchResult2: set of Place := {};
+			dcl searchResult3: set of Place := {};
+
+		 	IO`print("\n");IO`print("testSearch: ");IO`print("\n");
+			nt.addPlace(place1);
+			nt.addPlace(place2);
+			nt.addPlace(place3);
+			nt.addPlace(place4);
+			nt.addPlace(place5);
+			nt.addPlace(place6);
+			nt.removePlace(place6);
+			nt.addPlace(place6);
+			
+			-- Porto Connections
+			place1.addConnection(conn1);
+			place1.removeConnection(conn1);
+			place1.addConnection(conn1);
+			place1.addConnection(conn4);
+			place1.addConnection(conn5);
+			place1.addConnection(conn6);
+			
+			-- Lisboa Connections
+			place2.addConnection(conn7);
+			place2.addConnection(conn8);
+			
+			-- Coimbra Connections
+			place3.addConnection(conn2);
+			place3.addConnection(conn3);
+			place3.addConnection(conn9);
+			
+			-- Faro Connections
+			place5.addConnection(conn10);	
+
+			IO`print("searchResult1 'Por': \n");
+			searchResult1:=nt.search("Por");
+			for all place in set searchResult1 do (
+				IO`print(place.getName()); IO`print("\n");
+			);
+			IO`print("searchResult1 = {place1}\n\n");
+			assertTrue(searchResult1={place1});
+			
+			IO`print("searchResult2 'por': \n");
+			searchResult2:=nt.search("por");
+			for all place in set searchResult2 do (
+				IO`print(place.getName()); IO`print("\n");
+			);
+			IO`print("searchResult2 = {} empty\n\n");
+			assertTrue(searchResult2={});
+			
+			IO`print("searchResult3 'or': \n");
+			searchResult3:=nt.search("or");
+			for all place in set searchResult3 do (
+				IO`print(place.getName()); IO`print("\n");
+			);
+			IO`print("searchResult3 = {place1,place3,place5}\n ");
+			assertTrue(searchResult3={place1,place3,place5});	
+		);
+		
 	public static main: () ==> ()
 		main() == (
 			new NetworkTest().testNetworkCreate();
@@ -220,6 +283,7 @@ operations
 			new NetworkTest().testAddConnections();
 			new NetworkTest().testGetAllConnections();
 			new NetworkTest().testTravel();
+			new NetworkTest().testSearch();
 		);
 		
 traces

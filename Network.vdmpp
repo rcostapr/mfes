@@ -45,4 +45,16 @@ operations
 			return card(AllConnections);
 		);
 		
+	-- Search Place
+	public search: seq1 of char ==> set of Place
+		search(searchValue) == (
+			dcl searchPlaces: set of Place := {};
+			for all place in set Places do (
+				if card((elems place.getName()) inter (elems searchValue)) = len(searchValue) then (
+					searchPlaces := searchPlaces union {place});
+			);
+			return searchPlaces;
+		);
+functions
+
 end Network
