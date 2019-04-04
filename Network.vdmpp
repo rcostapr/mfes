@@ -43,6 +43,7 @@ operations
 				for all conn in set place.getConnections() do
 						AllConnections := AllConnections union {conn};
 			return card(AllConnections);
+	--		return card dunion {place.getConnections() | place in set Places};
 		);
 		
 	-- Search Place
